@@ -2,11 +2,51 @@ import utils.Validador;
 import validadores.ValidadorCNPJ;
 import validadores.ValidadorData;
 
+import java.util.Scanner;
+
 public class Programa {
     public static void main(String[] args) {
+
+        Scanner scanner = new Scanner(System.in);
+
+        Integer opcao;
+
+
+        do {
+            System.out.println("1 - Validar data");
+            System.out.println("2 - Validar cnpj");
+            System.out.println("3 - Executar testes");
+            System.out.println("4 - Encerrar programa");
+
+            System.out.print("Selecione a opção: ");
+            opcao = scanner.nextInt();
+
+
+            switch (opcao) {
+                case 1:
+                    ValidadorData validadorData = new ValidadorData();
+                    System.out.print("Digite o valor da data: ");
+                    String entrada = scanner.next();
+                    validarEntrada(validadorData, entrada);
+                    break;
+                case 2:
+                    ValidadorCNPJ validadorCNPJ = new ValidadorCNPJ();
+                    System.out.print("Digite o valor do CNPJ: ");
+                    entrada = scanner.next();
+                    validarEntrada(validadorCNPJ, entrada);
+                    break;
+                case 3:
+                    executarTestes();
+                    break;
+            }
+        } while (opcao != 4);
+
+
+    }
+
+    static void executarTestes() {
         Validador validadorData = new ValidadorData();
         Validador validadorCNPJ = new ValidadorCNPJ();
-
         // cnpjs para teste
         String cnpj1 = "00.000.000/0000-00";
         String cnpj2 = "48.204.156/0001-10";
@@ -31,4 +71,11 @@ public class Programa {
         System.out.printf("%s está válido? %b%n", data3, validadorData.valido(data3));
         System.out.printf("%s está válido? %b%n", data4, validadorData.valido(data4));
     }
+
+    static void validarEntrada(Validador validador, String entrada) {
+        Boolean valido = validador.valido(entrada);
+        System.out.printf("a entrada %s está %s conforme a expressao regular %s\n", entrada, valido ? "válida" : "inválida", validador.getPattern().toString());
+    }
+
+
 }
